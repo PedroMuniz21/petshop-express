@@ -3,13 +3,16 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const methodOverride = require('method-override');
 
 const indexRouter = require('./routes/index');
 const petsRouter = require('./routes/pets');
 const servicosRouter = require('./routes/servicos');
 const sobreRouter = require('./routes/sobre');
-const contatoRouter = require('./routes/contato');
 const loginRouter = require('./routes/login');
+const contatoRouter = require('./routes/contato');
+const adminRouter = require('./routes/admin');
+
 const app = express();
 
 // view engine setup
@@ -20,14 +23,17 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
-app.use('/', indexRouter);
+app.use(indexRouter);
 app.use('/pets', petsRouter);
 app.use('/servicos', servicosRouter);
 app.use('/sobre', sobreRouter);
-app.use('/contato', contatoRouter);
 app.use('/login', loginRouter);
+app.use('/contato', contatoRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,9 +1,7 @@
 const express = require('express');
-const { route } = require('./servicos');
+const loginController = require('../controllers/loginController');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.render('login');
-});
+router.get('/', loginController.index);
 
 module.exports = router;
